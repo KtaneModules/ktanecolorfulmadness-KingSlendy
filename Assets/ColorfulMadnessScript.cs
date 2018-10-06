@@ -1,4 +1,6 @@
-﻿using KMBombInfoHelper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using KMBombInfoHelper;
 using UnityEngine;
 
 public class ColorfulMadnessScript : MonoBehaviour
@@ -6,166 +8,93 @@ public class ColorfulMadnessScript : MonoBehaviour
     public KMSelectable[] buttons;
     public KMBombInfo Info;
 
-    bool isActivated = false;
-    int correctIndex;
-    int canPress = 0;
-    bool pairPress;
-
     public Texture2D[] colTexturesA = new Texture2D[1];
     public Texture2D[] colTexturesB = new Texture2D[1];
-    int setTexOver = 0;
-    int[] checkTexOver = new int[10];
-    int[] texOverVal = new int[10];
+    int[] topHalfTextures = new int[10];
+    int[] bottomHalfTextures = new int[10];
 
-    string serialNum = "";
-    int batteryNum = 0;
-    int portNum = 0;
-    int holdersNum = 0;
     int[] digits = new int[3];
-    char[] serialDigit = new char[3];
     bool hasRY = false;
-    int hasMesh = 0;
+    int numCheckerboards = 0;
     bool hasSquare = false;
 
-    int[] pressedButtons = new int[6];
-    int nowPressed = 0;
+    List<int> pressedButtons = new List<int>();
 
     void Start()
     {
-        Init();
-
-        GetComponent<KMBombModule>().OnActivate += ActivateModule;
-    }
-
-    void Init()
-    {
-        serialNum = Info.GetSerialNumber();
-        batteryNum = Info.GetBatteryCount();
-        portNum = Info.GetPortCount();
-        holdersNum = Info.GetBatteryHolderCount() + Info.GetPortPlateCount();
+        var serialNum = Info.GetSerialNumber();
 
         for (int i = 0; i < 3; i++)
         {
-            int j = i;
+            digits[i] = serialNum[i * 2];
 
-            serialDigit[j] = serialNum[j * 2];
-            digits[j] = serialDigit[j];
-
-            if (digits[j] >= 65)
-            {
-                digits[j] -= 65;
-            }
+            if (digits[i] >= 'A')
+                digits[i] -= 'A';
             else
-            {
-                if (digits[j] >= 48)
-                {
-                    digits[j] -= 48;
-                }
-            }
+                digits[i] -= '0';
         }
 
-        for (int k = 0; k < 2; k++)
+        // Set up the top half of the board
+        for (int i = 0; i < 10; i++)
         {
-            if (k == 0)
-            {
-                for (int i = 0; i < 10; i++)
-                {
-                    int j = i;
+            do
+                topHalfTextures[i] = Random.Range(0, 105);
+            while (bottomHalfTextures.Contains(topHalfTextures[i]));
 
-                    if (j != 0)
-                    {
-                        setTexOver = texOverVal[j - 1];
-                    }
+            if (topHalfTextures[i] <= 6)
+                hasRY = true;
 
-                    while (setTexOver == texOverVal[0] || setTexOver == texOverVal[1] || setTexOver == texOverVal[2] || setTexOver == texOverVal[3] || setTexOver == texOverVal[4] || setTexOver == texOverVal[5] || setTexOver == texOverVal[6] || setTexOver == texOverVal[7] || setTexOver == texOverVal[8] || setTexOver == texOverVal[9])
-                    {
-                        setTexOver = Random.Range(0, 105);
-                    }
+            if ((topHalfTextures[i] % 7) == 4)
+                numCheckerboards++;
 
-                    checkTexOver[j] = setTexOver;
+            if ((topHalfTextures[i] % 7) == 3)
+                hasSquare = true;
 
-                    if (setTexOver <= 6)
-                    {
-                        hasRY = true;
-                    }
+            buttons[i].transform.GetChild(1).gameObject.GetComponent<Renderer>().material.SetTexture("_MainTex", colTexturesA[topHalfTextures[i]]);
+            bottomHalfTextures[i] = topHalfTextures[i];
+        }
 
-                    if ((setTexOver % 7) == 4)
-                    {
-                        hasMesh++;
-                    }
+        for (int v = 0; v < bottomHalfTextures.Length; v++)
+        {
+            int tmp = bottomHalfTextures[v];
+            int r = Random.Range(v, bottomHalfTextures.Length);
+            bottomHalfTextures[v] = bottomHalfTextures[r];
+            bottomHalfTextures[r] = tmp;
+        }
 
-                    if ((setTexOver % 7) == 3)
-                    {
-                        hasSquare = true;
-                    }
+        for (int i = 10; i < 20; i++)
+            buttons[i].transform.GetChild(1).gameObject.GetComponent<Renderer>().material.SetTexture("_MainTex", colTexturesB[bottomHalfTextures[i - 10]]);
 
-                    buttons[j].transform.GetChild(1).gameObject.GetComponent<Renderer>().material.SetTexture("_MainTex", colTexturesA[setTexOver]);
-                    texOverVal[j] = setTexOver;
-                }
-            }
-            else
-            {
-                for (int v = 0; v < texOverVal.Length; v++)
-                {
-                    int tmp = texOverVal[v];
-                    int r = Random.Range(v, texOverVal.Length);
-                    texOverVal[v] = texOverVal[r];
-                    texOverVal[r] = tmp;
-                }
+        if (hasRY == true)
+        {
+            var batteryNum = Info.GetBatteryCount();
+            for (int i = 0; i < 3; i++)
+                digits[i] += batteryNum;
+        }
 
-                for (int i = 10; i < 20; i++)
-                {
-                    int j = i;
+        if (numCheckerboards > 0)
+        {
+            var portNum = Info.GetPortCount();
+            var value = Mathf.Abs((numCheckerboards * 2) - portNum);
+            for (int i = 0; i < 3; i++)
+                digits[i] = Mathf.Abs(digits[i] - value);
+        }
 
-                    buttons[j].transform.GetChild(1).gameObject.GetComponent<Renderer>().material.SetTexture("_MainTex", colTexturesB[texOverVal[j - 10]]);
-                }
-            }
+        if (hasSquare == true)
+        {
+            var holdersPlusPortPlates = Info.GetBatteryHolderCount() + Info.GetPortPlateCount();
+            for (int i = 0; i < 3; i++)
+                digits[i] *= holdersPlusPortPlates;
         }
 
         for (int i = 0; i < 3; i++)
-        {
-            int j = i;
-
-            if (hasRY == true)
-            {
-                digits[j] += batteryNum;
-            }
-
-            if (hasMesh > 0)
-            {
-                int meshPort = Mathf.Abs((hasMesh * 2) - portNum);
-
-                digits[j] -= meshPort;
-                digits[j] = Mathf.Abs(digits[j]);
-            }
-
-            if (hasSquare == true)
-            {
-                digits[j] *= holdersNum;
-            }
-
-            digits[j] = digits[j] % 10;
-        }
+            digits[i] = digits[i] % 10;
 
         while (digits[0] == digits[1] || digits[0] == digits[2])
-        {
-            digits[0]++;
-
-            if (digits[0] > 9)
-            {
-                digits[0] = 0;
-            }
-        }
+            digits[0] = (digits[0] + 1) % 10;
 
         while (digits[1] == digits[0] || digits[1] == digits[2])
-        {
-            digits[1]--;
-
-            if (digits[1] < 0)
-            {
-                digits[1] = 9;
-            }
-        }
+            digits[1] = (digits[1] + 9) % 10;
 
         for (int i = 0; i < buttons.Length; i++)
         {
@@ -179,48 +108,36 @@ public class ColorfulMadnessScript : MonoBehaviour
         }
     }
 
-    void ActivateModule()
-    {
-        isActivated = true;
-    }
-
     void onPress(int pressed)
     {
         GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
         GetComponent<KMSelectable>().AddInteractionPunch();
 
-        canPress = 0;
-        pairPress = false;
-
-        for (int p = 0; p < nowPressed; p++)
+        for (int p = 0; p < pressedButtons.Count; p++)
         {
             if (pressed == pressedButtons[p])
             {
-                canPress++;
+                // Correct button already pressed before: ignore
+                return;
             }
         }
 
-        if (canPress == 0)
+        if (
+            // Pressed any of the correct buttons in the top half
+            digits.Contains(pressed) ||
+            // Pressed any of the correct counterparts in the bottom half
+            (pressed >= 10 && digits.Any(digit => bottomHalfTextures[pressed - 10] == topHalfTextures[digit]))
+        )
         {
-            if (pressed >= 10)
+            pressedButtons.Add(pressed);
+            if (pressedButtons.Count == 6)
             {
-                pairPress = (texOverVal[pressed - 10] == checkTexOver[digits[0]] || texOverVal[pressed - 10] == checkTexOver[digits[1]] || texOverVal[pressed - 10] == checkTexOver[digits[2]]);
+                GetComponent<KMBombModule>().HandlePass();
             }
-
-            if ((pressed == digits[0] || pressed == digits[1] || pressed == digits[2]) || pairPress == true)
-            {
-                pressedButtons[nowPressed] = pressed;
-                nowPressed++;
-
-                if (nowPressed == 6)
-                {
-                    GetComponent<KMBombModule>().HandlePass();
-                }
-            }
-            else
-            {
-                GetComponent<KMBombModule>().HandleStrike();
-            }
+        }
+        else
+        {
+            GetComponent<KMBombModule>().HandleStrike();
         }
     }
 }
