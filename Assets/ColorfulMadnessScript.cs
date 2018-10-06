@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using KMBombInfoHelper;
 using UnityEngine;
+
+using Random = UnityEngine.Random;
 
 public class ColorfulMadnessScript : MonoBehaviour
 {
@@ -20,8 +23,13 @@ public class ColorfulMadnessScript : MonoBehaviour
 
     List<int> pressedButtons = new List<int>();
 
+    static int moduleIdCounter = 1;
+    int moduleId;
+
     void Start()
     {
+        moduleId = moduleIdCounter++;
+
         var serialNum = Info.GetSerialNumber();
 
         for (int i = 0; i < 3; i++)
@@ -33,6 +41,8 @@ public class ColorfulMadnessScript : MonoBehaviour
             else
                 digits[i] -= '0';
         }
+
+        Debug.LogFormat(@"[Colorful Madness #{0}] The three values from the serial number are: {1}, {2}, {3}", moduleId, digits[0], digits[1], digits[2]);
 
         // Set up the top half of the board
         for (int i = 0; i < 10; i++)
@@ -70,6 +80,7 @@ public class ColorfulMadnessScript : MonoBehaviour
             var batteryNum = Info.GetBatteryCount();
             for (int i = 0; i < 3; i++)
                 digits[i] += batteryNum;
+            Debug.LogFormat(@"[Colorful Madness #{0}] There is a red-and-yellow button. Adding {4}: {1}, {2}, {3}", moduleId, digits[0], digits[1], digits[2], batteryNum);
         }
 
         if (numCheckerboards > 0)
@@ -78,6 +89,7 @@ public class ColorfulMadnessScript : MonoBehaviour
             var value = Mathf.Abs((numCheckerboards * 2) - portNum);
             for (int i = 0; i < 3; i++)
                 digits[i] = Mathf.Abs(digits[i] - value);
+            Debug.LogFormat(@"[Colorful Madness #{0}] There are {5} checkerboard buttons. Subtracting {4}: {1}, {2}, {3}", moduleId, digits[0], digits[1], digits[2], value, 2 * numCheckerboards);
         }
 
         if (hasSquare == true)
@@ -85,16 +97,24 @@ public class ColorfulMadnessScript : MonoBehaviour
             var holdersPlusPortPlates = Info.GetBatteryHolderCount() + Info.GetPortPlateCount();
             for (int i = 0; i < 3; i++)
                 digits[i] *= holdersPlusPortPlates;
+            Debug.LogFormat(@"[Colorful Madness #{0}] There is a square-on-square button. Multiplying by {4}: {1}, {2}, {3}", moduleId, digits[0], digits[1], digits[2], holdersPlusPortPlates);
         }
 
         for (int i = 0; i < 3; i++)
             digits[i] = digits[i] % 10;
+
+        Debug.LogFormat(@"[Colorful Madness #{0}] Modulo 10: {1}, {2}, {3}", moduleId, digits[0], digits[1], digits[2]);
 
         while (digits[0] == digits[1] || digits[0] == digits[2])
             digits[0] = (digits[0] + 1) % 10;
 
         while (digits[1] == digits[0] || digits[1] == digits[2])
             digits[1] = (digits[1] + 9) % 10;
+
+        Debug.LogFormat(@"[Colorful Madness #{0}] Make unique: {1}, {2}, {3}", moduleId, digits[0], digits[1], digits[2]);
+
+        var counterparts = digits.Select(digit => Array.IndexOf(bottomHalfTextures, topHalfTextures[digit]) + 10).ToArray();
+        Debug.LogFormat(@"[Colorful Madness #{0}] The correct counterpart buttons on the bottom half are: {1}, {2}, {3}", moduleId, counterparts[0], counterparts[1], counterparts[2]);
 
         for (int i = 0; i < buttons.Length; i++)
         {
@@ -130,13 +150,16 @@ public class ColorfulMadnessScript : MonoBehaviour
         )
         {
             pressedButtons.Add(pressed);
+            Debug.LogFormat(@"[Colorful Madness #{0}] You pressed {1}, which is correct. {2} more to go.", moduleId, pressed, 6 - pressedButtons.Count);
             if (pressedButtons.Count == 6)
             {
+                Debug.LogFormat(@"[Colorful Madness #{0}] Module solved.", moduleId);
                 GetComponent<KMBombModule>().HandlePass();
             }
         }
         else
         {
+            Debug.LogFormat(@"[Colorful Madness #{0}] You pressed {1}, which is incorrect.", moduleId, pressed, 6 - pressedButtons.Count);
             GetComponent<KMBombModule>().HandleStrike();
         }
     }
