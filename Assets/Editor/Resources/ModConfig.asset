@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: ColorfulMadness
   title: Colorful Madness
-  description: 'Welcome to a colorphobic nightmare!
+  description: 'Welcome to a colorphobic''s nightmare!
 
 
     This is my first mod so hope you enjoy it!
@@ -31,10 +31,16 @@ MonoBehaviour:
 
     kikones34 [https://steamcommunity.com/id/kikones34]
 
+    For helping me writing the mod manual
+
+
     Timwi [https://steamcommunity.com/id/timwi]
 
+    For also helping me add the logfile and with the code
 
-    For helping me writing the mod manual'
-  version: 1.0
+    And also for helping me with the manual
+
+'
+  version: 1.4
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 749fb09c54b092b44a357d91949cd937, type: 3}
