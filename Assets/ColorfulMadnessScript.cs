@@ -167,15 +167,25 @@ public class ColorfulMadnessScript : MonoBehaviour
 	}
 
 	#pragma warning disable 414
-		private readonly string TwitchHelpMessage = @"!{0} press 3 (button to be pressed [0-19])";
+		private readonly string TwitchHelpMessage = @"!{0} press 0 1 2... (buttons to be pressed [within the range 0-19])";
 	#pragma warning restore 414
 
 	KMSelectable[] ProcessTwitchCommand (string command) {
 		command = command.ToLowerInvariant ().Trim ();
 
-		if (Regex.IsMatch (command, @"^press +\d$") || Regex.IsMatch (command, @"^press +\d\d$")) {
+		if (Regex.IsMatch (command, @"^press +[0-9^, |&]{1,}$")) {
 			command = command.Substring (6).Trim ();
-			return new[] { buttons [Mathf.Clamp (int.Parse (command.ToString ()), 0, 19)] };
+
+			var presses = command.Split (new [] { ',', ' ', '|', '&' }, System.StringSplitOptions.RemoveEmptyEntries);
+			var pressList = new List<KMSelectable> ();
+
+			for (int i = 0; i < presses.Length; i++) {
+				if (Regex.IsMatch (presses [i], @"^[0-9]{1,2}$")) {
+					pressList.Add (buttons [Mathf.Clamp (int.Parse (presses [i].ToString ()), 0, buttons.Length - 1)]);
+				}
+			}
+
+			return pressList.ToArray ();
 		}
 
 		return null;

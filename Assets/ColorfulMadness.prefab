@@ -4122,7 +4122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114035623872436138
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4148,7 +4148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114052670795802240
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4183,7 +4183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114054984610795846
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4196,7 +4196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114056652981617832
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4261,7 +4261,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114089114728583036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4326,7 +4326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114154171308058202
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4339,7 +4339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114162689985594790
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4352,7 +4352,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114171180992580974
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4409,7 +4409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114187788944718894
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4422,7 +4422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114189446671748020
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4470,7 +4470,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114261281082032622
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4483,7 +4483,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114268184399176420
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4575,7 +4575,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114371180699883770
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4601,7 +4601,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114381433113246882
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4666,7 +4666,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114412030256126522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4714,7 +4714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114421211881372822
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4998,7 +4998,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114618993478377256
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5046,7 +5046,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114643688927886026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5176,7 +5176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114701848945135152
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5309,7 +5309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Blend Unlit
 --- !u!114 &114856993668990662
 MonoBehaviour:
   m_ObjectHideFlags: 1
