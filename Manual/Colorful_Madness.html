@@ -83,15 +83,15 @@
 				var firstUnique = rnd.next(1, 5);
 				var secondUnique = rnd.next(1, 5);
 				var ruleStep = [
-					`Take the ${ ordinalNums[grabSerial[0]] }, ${ ordinalNums[grabSerial[1]] } and ${ ordinalNums[grabSerial[2]] } characters of the serial number.`,
-					`If there are any buttons with both ${ moduleColors[firstColor] } and ${ moduleColors[secondColor] } colors:`,
-					`Add the ${ moduleSteps[modSteps[0]] } to each of your main 3 digits.`,
-					`If there are any ${ moduleButtons[firstPattern] } buttons:`,
-					`Calculate the difference between the ${ moduleSteps[modSteps[1]] } and the ${ moduleSteps[modSteps[2]] }.`,
-					`If there are any ${ moduleButtons[secondPattern] } buttons:`,
-					`Multiply each of your main 3 digits by the ${ moduleSteps[modSteps[3]] } plus the ${ moduleSteps[modSteps[4]] }.`,
-					`Add ${ firstUnique } to the 1st digit until it’s not equal to the 2nd nor 3rd digits.`,
-					`Subtract ${ secondUnique } from the 2nd digit until it’s not equal to the 1st nor 3rd digits.`
+					`Take the ${ordinalNums[grabSerial[0]]}, ${ordinalNums[grabSerial[1]]} and ${ordinalNums[grabSerial[2]]} characters of the serial number.`,
+					`If there are any buttons with both ${moduleColors[firstColor]} and ${moduleColors[secondColor]} colors:`,
+					`Add the ${moduleSteps[modSteps[0]]} to each of your main 3 digits.`,
+					`If there are any ${moduleButtons[firstPattern]} buttons:`,
+					`Calculate the difference between the ${moduleSteps[modSteps[1]]} and the ${moduleSteps[modSteps[2]]}.`,
+					`If there are any ${moduleButtons[secondPattern]} buttons:`,
+					`Multiply each of your main 3 digits by the ${moduleSteps[modSteps[3]]} plus the ${moduleSteps[modSteps[4]]}.`,
+					`Add ${firstUnique} to the 1st digit until it’s not equal to the 2nd nor 3rd digits.`,
+					`Subtract ${secondUnique} from the 2nd digit until it’s not equal to the 1st nor 3rd digits.`
 				];
 			
 				for (var i = 0; i < ruleStep.length; i++) {

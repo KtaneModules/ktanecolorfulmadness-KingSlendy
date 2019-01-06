@@ -54,6 +54,7 @@ public class ColorfulMadnessScript : MonoBehaviour {
 		moduleId = moduleIdCounter++;
 		var serialNum = BombInfo.GetSerialNumber();
 		rnd = RuleSeedable.GetRNG();
+		Debug.LogFormat(@"[Colorful Madness #{0}] Using rule seed: {1}", moduleId, rnd.Seed);
 		var grabSerial = new[] { 0, 2, 4 };
 		var firstColor = 0;
 		var secondColor = 1;
