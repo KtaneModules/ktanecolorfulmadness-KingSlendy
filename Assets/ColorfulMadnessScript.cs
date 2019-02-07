@@ -22,7 +22,7 @@ public class ColorfulMadnessScript : MonoBehaviour {
 	public Texture2D[] ColTexturesB = new Texture2D[1];
 	public GameObject ColScreen;
 
-	int[] topHalfTextures = new int[10];
+	readonly int[] topHalfTextures = new int[10];
 	int[] bottomHalfTextures = new int[10];
 	int[] moduleTextures = new int[20];
 
@@ -30,7 +30,7 @@ public class ColorfulMadnessScript : MonoBehaviour {
 	List<int> pickedValues = new List<int>();
 
 	int[] digits = new int[3];
-	string[] moduleButtonNames = {
+	readonly string[] moduleButtonNames = {
 		"vertical half-half",
 		"horizontal half-half",
 		"2x2 checkerboard",
@@ -40,7 +40,7 @@ public class ColorfulMadnessScript : MonoBehaviour {
 		"horizontal big-stripe"
 	};
 
-	string[] moduleColors = { "red", "yellow", "green", "cyan", "blue", "purple" };
+	readonly string[] moduleColors = { "red", "yellow", "green", "cyan", "blue", "purple" };
 
 	delegate bool checkCol(int x, int y, int z);
 
@@ -50,50 +50,50 @@ public class ColorfulMadnessScript : MonoBehaviour {
 	static int moduleIdCounter = 1;
 	int moduleId;
 
-	void Start() {
-		moduleId = moduleIdCounter++;
-		var serialNum = BombInfo.GetSerialNumber();
-		rnd = RuleSeedable.GetRNG();
-		Debug.LogFormat(@"[Colorful Madness #{0}] Using rule seed: {1}", moduleId, rnd.Seed);
-		var grabSerial = new[] { 0, 2, 4 };
-		var firstColor = 0;
-		var secondColor = 1;
-		var modSteps = new[] { 4, 0, 5, 6, 7 };
-		var firstPattern = 4;
-		var secondPattern = 3;
-		var firstUnique = 1;
-		var secondUnique = 1;
+    void Start() {
+        moduleId = moduleIdCounter++;
+        var serialNum = BombInfo.GetSerialNumber();
+        rnd = RuleSeedable.GetRNG();
+        Debug.LogFormat(@"[Colorful Madness #{0}] Using rule seed: {1}", moduleId, rnd.Seed);
+        var grabSerial = new[] { 0, 2, 4 };
+        var firstColor = 0;
+        var secondColor = 1;
+        var modSteps = new[] { 4, 0, 5, 6, 7 };
+        var firstPattern = 4;
+        var secondPattern = 3;
+        var firstUnique = 1;
+        var secondUnique = 1;
 
-		if (rnd.Seed != 1) {
-			firstColor = rnd.Next(5);
-			secondColor = rnd.Next(firstColor + 1, 6);
-			grabSerial = new[] { ChooseUnique(6), ChooseUnique(6), ChooseUnique(6) };
-			pickedValues.Clear();
-			modSteps = new[] { ChooseUnique(10), ChooseUnique(10), ChooseUnique(10), ChooseUnique(10), ChooseUnique(10) };
-			pickedValues.Clear();
-			firstPattern = ChooseUnique(7);
-			secondPattern = ChooseUnique(7);
-			pickedValues.Clear();
-			firstUnique = rnd.Next(1, 5);
-			secondUnique = rnd.Next(1, 5);
-		}
-			
-		var subCols = new[] { 0, 0, 1, 3, 6, 10 };
-		var initCol = (7 * ((5 * firstColor) - subCols[firstColor])) + (7 * (secondColor - (firstColor + 1)));
-		ColScreen.SetActive(ColorblindMode.ColorblindModeActive);
+        if (rnd.Seed != 1) {
+            firstColor = rnd.Next(5);
+            secondColor = rnd.Next(firstColor + 1, 6);
+            grabSerial = new[] { ChooseUnique(6), ChooseUnique(6), ChooseUnique(6) };
+            pickedValues.Clear();
+            modSteps = new[] { ChooseUnique(10), ChooseUnique(10), ChooseUnique(10), ChooseUnique(10), ChooseUnique(10) };
+            pickedValues.Clear();
+            firstPattern = ChooseUnique(7);
+            secondPattern = ChooseUnique(7);
+            pickedValues.Clear();
+            firstUnique = rnd.Next(1, 5);
+            secondUnique = rnd.Next(1, 5);
+        }
 
-		for (int i = 0; i < 3; i++) {
-			digits[i] = serialNum[grabSerial[i]];
+        var subCols = new[] { 0, 0, 1, 3, 6, 10 };
+        var initCol = (7 * ((5 * firstColor) - subCols[firstColor])) + (7 * (secondColor - (firstColor + 1)));
+        ColScreen.SetActive(ColorblindMode.ColorblindModeActive);
 
-			if (digits[i] >= 'A') {
-				digits[i] -= 'A';
-			} else {
-				digits[i] -= '0';
-			}
-		}
+        for (int i = 0; i < 3; i++) {
+            digits[i] = serialNum[grabSerial[i]];
 
-		Debug.LogFormat(@"[Colorful Madness #{0}] The 3 characters of the serial number are: {1}, {2}, {3}", moduleId, serialNum[grabSerial[0]], serialNum[grabSerial[1]], serialNum[grabSerial[2]]);
-		Debug.LogFormat(@"[Colorful Madness #{0}] The 3 main digits are: {1}, {2}, {3}", moduleId, digits[0], digits[1], digits[2]);
+            if (digits[i] >= 'A') {
+                digits[i] -= 'A';
+            } else {
+                digits[i] -= '0';
+            }
+        }
+        
+        Debug.LogFormat(@"[Colorful Madness #{0}] The 3 characters of the serial number are: {1}", moduleId, Enumerable.Range(0, 3).Select(x => serialNum[grabSerial[x]]).Join(", "));
+		Debug.LogFormat(@"[Colorful Madness #{0}] The 3 main digits are: {1}", moduleId, digits.Join(", "));
 		var hasButtonCC = 0;
 		var hasButtonA = 0;
 		var hasButtonB = 0;
@@ -159,7 +159,7 @@ public class ColorfulMadnessScript : MonoBehaviour {
 				digits[i] += modValue;
 			}
 
-			Debug.LogFormat(@"[Colorful Madness #{0}] There are {1} {2} and {3} button. Adding {4}: {5}, {6}, {7}", moduleId, hasButtonCC * 2, moduleColors[firstColor], moduleColors[secondColor], modValue, digits[0], digits[1], digits[2]);
+			Debug.LogFormat(@"[Colorful Madness #{0}] There are {1} {2} and {3} button. Adding {4}: {5}", moduleId, hasButtonCC * 2, moduleColors[firstColor], moduleColors[secondColor], modValue, digits.Join(", "));
 		}
 
 		stepList[0] = hasButtonA * 2;
@@ -172,7 +172,7 @@ public class ColorfulMadnessScript : MonoBehaviour {
 				digits[i] = Mathf.Abs(digits[i] - modValue);
 			}
 
-			Debug.LogFormat(@"[Colorful Madness #{0}] There are {1} {2} buttons. Subtracting {3}: {4}, {5}, {6}", moduleId, hasButtonA * 2, moduleButtonNames[firstPattern], modValue, digits[0], digits[1], digits[2]);
+			Debug.LogFormat(@"[Colorful Madness #{0}] There are {1} {2} buttons. Subtracting {3}: {4}", moduleId, hasButtonA * 2, moduleButtonNames[firstPattern], modValue, digits.Join(", "));
 		}
 
 		stepList[0] = hasButtonB * 2;
@@ -185,14 +185,14 @@ public class ColorfulMadnessScript : MonoBehaviour {
 				digits[i] *= modValue;
 			}
 
-			Debug.LogFormat(@"[Colorful Madness #{0}] There are {1} {2} buttons. Multiplying by {3}: {4}, {5}, {6}", moduleId, hasButtonB * 2, moduleButtonNames[secondPattern], modValue, digits[0], digits[1], digits[2]);
+			Debug.LogFormat(@"[Colorful Madness #{0}] There are {1} {2} buttons. Multiplying by {3}: {4}", moduleId, hasButtonB * 2, moduleButtonNames[secondPattern], modValue, digits.Join(", "));
 		}
 
 		for (int i = 0; i < 3; i++) {
 			digits[i] = digits[i] % 10;
 		}
 
-		Debug.LogFormat(@"[Colorful Madness #{0}] Modulo 10: {1}, {2}, {3}", moduleId, digits[0], digits[1], digits[2]);
+		Debug.LogFormat(@"[Colorful Madness #{0}] Modulo 10: {1}", moduleId, digits.Join(", "));
 
 		while (digits[0] == digits[1] || digits[0] == digits[2]) {
 			digits[0] = (digits[0] + firstUnique) % 10;
@@ -202,11 +202,11 @@ public class ColorfulMadnessScript : MonoBehaviour {
 			digits[1] = (digits[1] + (10 - secondUnique)) % 10;
 		}
 
-		Debug.LogFormat(@"[Colorful Madness #{0}] Make unique: {1}, {2}, {3}", moduleId, digits[0], digits[1], digits[2]);
-		Debug.LogFormat(@"[Colorful Madness #{0}] Added one: {1}, {2}, {3}", moduleId, digits[0] + 1, digits[1] + 1, digits[2] + 1);
+		Debug.LogFormat(@"[Colorful Madness #{0}] Make unique: {1}", moduleId, digits.Join(", "));
+		Debug.LogFormat(@"[Colorful Madness #{0}] Added one: {1}", moduleId, digits.Select(x => x + 1).Join(", "));
 
 		var counterparts = digits.Select(digit => Array.IndexOf(bottomHalfTextures, topHalfTextures[digit]) + 10).ToArray();
-		Debug.LogFormat(@"[Colorful Madness #{0}] The correct counterpart buttons on the bottom half are: {1}, {2}, {3}", moduleId, counterparts[0] + 1, counterparts[1] + 1, counterparts[2] + 1);
+		Debug.LogFormat(@"[Colorful Madness #{0}] The correct counterpart buttons on the bottom half are: {1}", moduleId, counterparts.Select(x => x + 1).Join(", "));
 
 		for (int i = 0; i < ModuleButtons.Length; i++) {
 			int j = i;
@@ -277,6 +277,7 @@ public class ColorfulMadnessScript : MonoBehaviour {
 				if (getCol(i, j, moduleTextures[highlighted])) {
 					compText.text += (highlighted < 10) ? moduleColors[i] + "-" + moduleColors[j] : moduleColors[j] + "-" + moduleColors[i];
 					i = 4;
+
 					break;
 				}
 			}
