@@ -25,10 +25,8 @@ public class ColorfulMadnessScript : MonoBehaviour {
 	readonly int[] topHalfTextures = new int[10];
 	int[] bottomHalfTextures = new int[10];
 	int[] moduleTextures = new int[20];
-
 	MonoRandom rnd;
 	List<int> pickedValues = new List<int>();
-
 	int[] digits = new int[3];
 	readonly string[] moduleButtonNames = {
 		"vertical half-half",
@@ -41,9 +39,7 @@ public class ColorfulMadnessScript : MonoBehaviour {
 	};
 
 	readonly string[] moduleColors = { "red", "yellow", "green", "cyan", "blue", "purple" };
-
 	delegate bool checkCol(int x, int y, int z);
-
 	checkCol getCol;
 	List<int> pressedButtons = new List<int>();
 
@@ -249,8 +245,11 @@ public class ColorfulMadnessScript : MonoBehaviour {
 			}
 		}
 
+        var buttonComp = ModuleButtons[pressed].GetComponent<Renderer>();
+
 		if (digits.Contains(pressed) || (pressed >= 10 && digits.Any(digit => bottomHalfTextures[pressed - 10] == topHalfTextures[digit]))) {
 			pressedButtons.Add(pressed);
+            buttonComp.material.color = Color.white;
 			Debug.LogFormat(@"[Colorful Madness #{0}] You pressed {1}, which is correct. {2} more to go.", moduleId, pressed + 1, 6 - pressedButtons.Count);
 
 			if (pressedButtons.Count == 6) {
@@ -258,6 +257,7 @@ public class ColorfulMadnessScript : MonoBehaviour {
 				BombModule.HandlePass();
 			}
 		} else {
+            buttonComp.material.color = Color.gray;
 			Debug.LogFormat(@"[Colorful Madness #{0}] You pressed {1}, which is incorrect.", moduleId, pressed + 1);
 			BombModule.HandleStrike();
 		}
@@ -305,8 +305,7 @@ public class ColorfulMadnessScript : MonoBehaviour {
 
 		if (Regex.IsMatch(command, @"^press +[0-9^, |&]+$")) {
 			command = command.Substring(6).Trim();
-
-			var presses = command.Split(new[] { ',', ' ', '|', '&' }, System.StringSplitOptions.RemoveEmptyEntries);
+			var presses = command.Split(new[] { ',', ' ', '|', '&' }, StringSplitOptions.RemoveEmptyEntries);
 			var pressList = new List<KMSelectable>();
 
 			for (int i = 0; i < presses.Length; i++) {
@@ -324,8 +323,7 @@ public class ColorfulMadnessScript : MonoBehaviour {
 			}
 
 			command = command.Substring(5).Trim();
-
-			var showing = command.Split(new[] { ',', ' ', '|', '&' }, System.StringSplitOptions.RemoveEmptyEntries);
+			var showing = command.Split(new[] { ',', ' ', '|', '&' }, StringSplitOptions.RemoveEmptyEntries);
 			var showList = new List<int>();
 
 			for (int i = 0; i < showing.Length; i++) {
